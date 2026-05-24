@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Only Antifans — 욕할 거면, 돈 내고 욕해</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f2ee;
+      --red: #e63329;
+      --red-dark: #b52820;
+      --gray: #888;
+      --gray-light: #e8e5e0;
+      --gray-mid: #ccc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--red); }
+
+    .nav-btn {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(230,51,41,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid var(--red);
+      color: var(--red);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      padding: 5px 14px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 12vw, 120px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      color: var(--white);
+    }
+
+    .hero h1 .accent { color: var(--red); }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-red:hover { background: var(--red-dark); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 14px 32px;
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.6); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--gray);
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* SECTION */
+    section { padding: 6rem 2rem; }
+
+    .section-inner { max-width: 900px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      margin-bottom: 3rem;
+      color: var(--white);
+    }
+
+    /* HOW IT WORKS */
+    .how { background: #111; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .step {
+      background: #111;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: rgba(255,255,255,0.07);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* TIERS */
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .tier {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .tier:hover { background: #141414; }
+
+    .tier.featured {
+      background: var(--red);
+    }
+
+    .tier.featured:hover { background: #d42e25; }
+
+    .tier-tag {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .tier.featured .tier-tag { color: rgba(255,255,255,0.8); }
+
+    .tier-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .tier-price-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-features { list-style: none; }
+
+    .tier-features li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-features li::before {
+      content: '—';
+      color: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+
+    .tier.featured .tier-features li { color: rgba(255,255,255,0.9); }
+    .tier.featured .tier-features li::before { color: rgba(255,255,255,0.5); }
+
+    /* DUAL BENEFIT */
+    .dual { background: #0d0d0d; }
+
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    @media (max-width: 600px) {
+      .dual-grid { grid-template-columns: 1fr; }
+    }
+
+    .dual-card {
+      padding: 3rem 2.5rem;
+      background: #0d0d0d;
+    }
+
+    .dual-card.red { background: var(--red); }
+
+    .dual-icon {
+      font-size: 32px;
+      margin-bottom: 1rem;
+    }
+
+    .dual-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.03em;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .dual-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+    }
+
+    .dual-card.red .dual-desc { color: rgba(255,255,255,0.85); }
+
+    /* CTA FOOTER */
+    .cta-footer {
+      background: var(--black);
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .cta-footer h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .cta-footer p {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 0.05em;
+      color: var(--white);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ANIMATIONS */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="logo">ONLY<span>ANTI</span>FANS</a>
+    <button class="nav-btn" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">사전 등록</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">베타 오픈 예정</div>
+    <h1>욕할 거면<br><span class="accent">돈 내고</span><br>욕해.</h1>
+    <p class="hero-sub">크리에이터의 안티팬이 직접 비용을 내고 솔직한 말을 남깁니다. 크리에이터는 수익을 얻고, 안티팬은 목소리를 냅니다.</p>
+    <div class="hero-cta">
+      <button class="btn-red" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">크리에이터로 시작하기</button>
+      <button class="btn-outline" onclick="document.getElementById('tiers').scrollIntoView({behavior:'smooth'})">등급 보기</button>
+    </div>
+    <div class="scroll-hint">↓ 스크롤</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="section-inner">
+      <div class="section-label fade-in">어떻게 작동하나요</div>
+      <div class="section-title fade-in">4단계면 끝.</div>
+      <div class="steps fade-in">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">크리에이터 등록</div>
+          <div class="step-desc">채널을 개설하고 약관에 동의합니다.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">안티팬 입장</div>
+          <div class="step-desc">등급 선택 후 결제하고 댓글을 작성합니다.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">수익 발생</div>
+          <div class="step-desc">댓글이 달릴수록 수익이 쌓입니다.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-title">에스크로 정산</div>
+          <div class="step-desc">결제금은 플랫폼이 보관 후 안전하게 정산합니다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DUAL BENEFIT -->
+  <section class="dual">
+    <div class="section-inner">
+      <div class="section-label fade-in">왜 써야 하나요</div>
+      <div class="section-title fade-in">둘 다 치료받는다.</div>
+      <div class="dual-grid fade-in">
+        <div class="dual-card">
+          <div class="dual-icon">💸</div>
+          <div class="dual-title">크리에이터</div>
+          <div class="dual-desc">어차피 욕 먹을 거, 돈이라도 받자. 악플이 수익으로 바뀌는 금융치료.</div>
+        </div>
+        <div class="dual-card red">
+          <div class="dual-icon">🔥</div>
+          <div class="dual-title">안티팬</div>
+          <div class="dual-desc">하고 싶은 말 다 하고, 크리에이터가 직접 읽는다. 속이 뻥 뚫리는 감정치료.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="tiers">
+    <div class="section-inner">
+      <div class="section-label fade-in">댓글 등급</div>
+      <div class="section-title fade-in">얼마나 세게 갈 거야?</div>
+      <div class="tiers-grid fade-in">
+        <div class="tier">
+          <span class="tier-tag">기본</span>
+          <div class="tier-name">일반</div>
+          <div class="tier-price">₩1,000</div>
+          <div class="tier-price-sub">/ 댓글</div>
+          <hr class="tier-divider">
+          <ul class="tier-features">
+            <li>솔직한 의견과 비판</li>
+            <li>텍스트 댓글</li>
+            <li>익명 보장</li>
+          </ul>
+        </div>
+        <div class="tier featured">
+          <span class="tier-tag">인기</span>
+          <div class="tier-name">노필터</div>
+          <div class="tier-price">₩9,900</div>
+          <div class="tier-price-sub">/ 댓글</div>
+          <hr class="tier-divider">
+          <ul class="tier-features">
+            <li>필터 없는 직접적인 표현</li>
+            <li>텍스트 댓글</li>
+            <li>익명 보장</li>
+          </ul>
+        </div>
+        <div class="tier">
+          <span class="tier-tag">프리미엄</span>
+          <div class="tier-name">비디오</div>
+          <div class="tier-price">₩49,000</div>
+          <div class="tier-price-sub">/ 댓글</div>
+          <hr class="tier-divider">
+          <ul class="tier-features">
+            <li>노필터 텍스트</li>
+            <li>크리에이터 영상 답변</li>
+            <li>익명 보장</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FOOTER -->
+  <section class="cta-footer" id="register">
+    <div class="section-inner">
+      <div class="section-label fade-in">사전 등록</div>
+      <h2 class="fade-in">먼저 올라타.</h2>
+      <p class="fade-in">베타 오픈 전 사전 등록하면 수수료 우대 혜택을 드립니다.</p>
+      <div class="fade-in" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:400px; margin:0 auto;">
+        <input type="email" placeholder="이메일 주소" style="flex:1; min-width:200px; padding:14px 16px; background:#111; border:1px solid rgba(255,255,255,0.15); color:#f5f2ee; font-size:14px; font-family:'Noto Sans KR',sans-serif; outline:none;">
+        <button class="btn-red" style="white-space:nowrap;">등록하기</button>
+      </div>
+      <div class="stat-row fade-in">
+        <div class="stat">
+          <div class="stat-num">0%</div>
+          <div class="stat-label">베타 기간 수수료</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">익명</div>
+          <div class="stat-label">신상 보호</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">에스크로</div>
+          <div class="stat-label">결제 안전 보호</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="#" class="logo" style="font-size:16px;">ONLY<span>ANTI</span>FANS</a>
+    <p>© 2026 Only Antifans. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
