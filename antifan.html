@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>안티팬 — Only Antifans</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #e63329; --red-dark: #b52820; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: #0a0a0a; color: #f5f2ee; height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: #111; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 52px; flex-shrink: 0; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.05em; color: #f5f2ee; text-decoration: none; }
+    .logo span { color: var(--red); }
+    .topbar-user { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.4); }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(55,138,221,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: #378ADD; }
+    .layout { display: grid; grid-template-columns: 180px 1fr; flex: 1; overflow: hidden; }
+    .sidebar { background: #111; border-right: 1px solid rgba(255,255,255,0.07); padding: 1rem 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 1.25rem; font-size: 13px; color: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.15s; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #f5f2ee; }
+    .nav-item.active { color: #f5f2ee; background: rgba(255,255,255,0.07); font-weight: 500; }
+    .nav-item i { font-size: 16px; }
+    .main { padding: 1.5rem; overflow-y: auto; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-title { font-size: 18px; font-weight: 500; color: #f5f2ee; margin-bottom: 1.25rem; }
+    .search-bar { margin-bottom: 1.25rem; }
+    .search-bar input { width: 100%; font-size: 13px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: #f5f2ee; padding: 9px 12px; border-radius: 6px; font-family: 'Noto Sans KR', sans-serif; outline: none; }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.2); }
+    .creator-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .creator-card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.25rem; cursor: pointer; transition: border-color 0.15s; }
+    .creator-card:hover { border-color: var(--red); }
+    .creator-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; margin-bottom: 10px; }
+    .av-red { background: rgba(230,51,41,0.15); color: var(--red); }
+    .av-blue { background: rgba(55,138,221,0.15); color: #378ADD; }
+    .av-green { background: rgba(99,153,34,0.15); color: #97C459; }
+    .av-amber { background: rgba(186,117,23,0.15); color: #EF9F27; }
+    .creator-name { font-size: 14px; font-weight: 500; color: #f5f2ee; margin-bottom: 2px; }
+    .creator-handle { font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .creator-stats { display: flex; gap: 10px; }
+    .creator-stat { font-size: 11px; color: rgba(255,255,255,0.25); }
+    .creator-stat b { color: rgba(255,255,255,0.5); font-weight: 500; }
+    .btn-back { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.4); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 4px; }
+    .profile-box { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.5rem; margin-bottom: 10px; }
+    .profile-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .profile-av { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; flex-shrink: 0; }
+    .profile-name { font-size: 16px; font-weight: 500; color: #f5f2ee; }
+    .profile-handle { font-size: 13px; color: rgba(255,255,255,0.3); margin-top: 2px; }
+    .profile-bio { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 1.25rem; line-height: 1.6; }
+    .section-label { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 10px; }
+    .tier-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .tier-btn { border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; cursor: pointer; background: #1a1a1a; text-align: left; transition: border-color 0.15s; }
+    .tier-btn:hover { border-color: rgba(255,255,255,0.25); }
+    .tier-btn.selected { border-color: var(--red); background: rgba(230,51,41,0.08); }
+    .tier-btn-name { font-size: 13px; font-weight: 500; color: #f5f2ee; margin-bottom: 2px; }
+    .tier-btn-price { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .write-box { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.25rem; margin-bottom: 10px; }
+    textarea { width: 100%; font-size: 13px; height: 80px; resize: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 10px; font-family: 'Noto Sans KR', sans-serif; color: #f5f2ee; background: #1a1a1a; outline: none; margin-bottom: 10px; display: block; }
+    textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .pay-row { display: flex; align-items: center; justify-content: space-between; }
+    .pay-amount { font-size: 18px; font-weight: 500; color: #f5f2ee; }
+    .pay-amount span { font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 400; }
+    .btn-pay { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+    .btn-pay:hover { background: var(--red-dark); }
+    .card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 10px; }
+    .card-title { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .comment-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .comment-meta { display: flex; align-items: center; gap: 8px; }
+    .tier-badge { font-size: 10px; padding: 2px 7px; border-radius: 999px; font-weight: 500; }
+    .tier-basic { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
+    .tier-nofilter { background: rgba(186,117,23,0.15); color: #EF9F27; }
+    .tier-video { background: rgba(230,51,41,0.15); color: var(--red); }
+    .comment-time { font-size: 11px; color: rgba(255,255,255,0.2); }
+    .comment-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .comment-target { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+    .video-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; background: rgba(29,158,117,0.15); color: #5DCAA5; padding: 2px 8px; border-radius: 999px; margin-top: 5px; }
+    .amount-paid { font-size: 12px; font-weight: 500; color: var(--red); }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="logo">ONLY<span>ANTI</span>FANS</a>
+    <div class="topbar-user">
+      <div class="avatar">익</div>
+      익명유저
+    </div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="nav-item active" onclick="showPage('search',this)"><i class="ti ti-search"></i> 크리에이터 찾기</div>
+      <div class="nav-item" onclick="showPage('mycomments',this)"><i class="ti ti-message"></i> 내 댓글</div>
+    </div>
+    <div class="main">
+      <div id="page-search" class="page active">
+        <div class="page-title">크리에이터 찾기</div>
+        <div class="search-bar"><input type="text" placeholder="크리에이터 이름 검색..."></div>
+        <div class="creator-grid">
+          <div class="creator-card" onclick="showProfile('김태호','@taehoo_creator','av-red','김')"><div class="creator-av av-red">김</div><div class="creator-name">김태호</div><div class="creator-handle">@taehoo_creator</div><div class="creator-stats"><div class="creator-stat"><b>47</b> 댓글</div><div class="creator-stat"><b>284k</b> 구독</div></div></div>
+          <div class="creator-card" onclick="showProfile('이수진','@sujin_v','av-blue','이')"><div class="creator-av av-blue">이</div><div class="creator-name">이수진</div><div class="creator-handle">@sujin_v</div><div class="creator-stats"><div class="creator-stat"><b>112</b> 댓글</div><div class="creator-stat"><b>1.2M</b> 구독</div></div></div>
+          <div class="creator-card" onclick="showProfile('박민준','@minjun_real','av-green','박')"><div class="creator-av av-green">박</div><div class="creator-name">박민준</div><div class="creator-handle">@minjun_real</div><div class="creator-stats"><div class="creator-stat"><b>23</b> 댓글</div><div class="creator-stat"><b>89k</b> 구독</div></div></div>
+          <div class="creator-card" onclick="showProfile('최유나','@yuna_log','av-amber','최')"><div class="creator-av av-amber">최</div><div class="creator-name">최유나</div><div class="creator-handle">@yuna_log</div><div class="creator-stats"><div class="creator-stat"><b>88</b> 댓글</div><div class="creator-stat"><b>520k</b> 구독</div></div></div>
+        </div>
+      </div>
+      <div id="page-profile" class="page">
+        <button class="btn-back" onclick="showPage('search',document.querySelector('.nav-item'))"><i class="ti ti-arrow-left" style="font-size:12px"></i> 목록으로</button>
+        <div class="profile-box">
+          <div class="profile-top">
+            <div class="profile-av av-red" id="prof-av">김</div>
+            <div><div class="profile-name" id="prof-name">김태호</div><div class="profile-handle" id="prof-handle">@taehoo_creator</div></div>
+          </div>
+          <div class="profile-bio">유튜브 크리에이터. 안티팬 환영합니다. 욕 들을 준비 됐어요.</div>
+          <div class="section-label">등급 선택</div>
+          <div class="tier-buttons">
+            <div class="tier-btn selected" onclick="selectTier(this,1000,'일반')"><div class="tier-btn-name">일반</div><div class="tier-btn-price">₩1,000</div></div>
+            <div class="tier-btn" onclick="selectTier(this,9900,'노필터')"><div class="tier-btn-name">노필터</div><div class="tier-btn-price">₩9,900</div></div>
+            <div class="tier-btn" onclick="selectTier(this,49000,'비디오')"><div class="tier-btn-name">비디오</div><div class="tier-btn-price">₩49,000</div></div>
+          </div>
+        </div>
+        <div class="write-box">
+          <div class="section-label" style="margin-bottom:8px;">댓글 작성</div>
+          <textarea placeholder="하고 싶은 말을 남겨보세요. 익명으로 전달됩니다."></textarea>
+          <div class="pay-row">
+            <div class="pay-amount" id="pay-amount">₩1,000 <span>/ 일반 등급</span></div>
+            <button class="btn-pay">결제하고 전달하기</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">다른 안티팬들의 댓글 (47)</div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span></div><span class="comment-time">2시간 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">5시간 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">3일 전</span></div><div class="comment-text">썸네일 낚시 너무 심한 거 아님?</div></div>
+        </div>
+      </div>
+      <div id="page-mycomments" class="page">
+        <div class="page-title">내가 쓴 댓글</div>
+        <div class="card">
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount-paid">₩49,000</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div><div class="comment-target">→ 김태호</div><div class="video-badge"><i class="ti ti-video" style="font-size:11px"></i> 영상 답변 수신 완료</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount-paid">₩9,900</span></div><span class="comment-time">5일 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div><div class="comment-target">→ 이수진</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount-paid">₩1,000</span></div><span class="comment-time">1주 전</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div><div class="comment-target">→ 박민준</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showPage(name, el) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      if (el) el.classList.add('active');
+    }
+    function showProfile(name, handle, avClass, initial) {
+      document.getElementById('prof-name').textContent = name;
+      document.getElementById('prof-handle').textContent = handle;
+      const av = document.getElementById('prof-av');
+      av.className = 'profile-av ' + avClass;
+      av.textContent = initial;
+      showPage('profile', null);
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    }
+    function selectTier(el, amount, label) {
+      document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('pay-amount').innerHTML = '₩' + amount.toLocaleString() + ' <span>/ ' + label + ' 등급</span>';
+    }
+  </script>
+</body>
+</html>

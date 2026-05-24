@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>크리에이터 대시보드 — Only Antifans</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #e63329; --red-dark: #b52820; --black: #0a0a0a; --white: #f5f2ee; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: #0a0a0a; color: #f5f2ee; height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: #111; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 52px; flex-shrink: 0; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.05em; color: #f5f2ee; text-decoration: none; }
+    .logo span { color: var(--red); }
+    .topbar-user { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.4); }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(230,51,41,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--red); }
+    .layout { display: grid; grid-template-columns: 180px 1fr; flex: 1; overflow: hidden; }
+    .sidebar { background: #111; border-right: 1px solid rgba(255,255,255,0.07); padding: 1rem 0; overflow-y: auto; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 1.25rem; font-size: 13px; color: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.15s; text-decoration: none; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #f5f2ee; }
+    .nav-item.active { color: #f5f2ee; background: rgba(255,255,255,0.07); font-weight: 500; }
+    .nav-item i { font-size: 16px; }
+    .main { padding: 1.5rem; overflow-y: auto; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-title { font-size: 18px; font-weight: 500; color: #f5f2ee; margin-bottom: 1.25rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+    .metric { background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 1rem; }
+    .metric-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+    .metric-value { font-size: 22px; font-weight: 500; color: #f5f2ee; }
+    .metric-sub { font-size: 11px; color: #5DCAA5; margin-top: 3px; }
+    .card { background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 10px; }
+    .card-title { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .comment-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .comment-meta { display: flex; align-items: center; gap: 8px; }
+    .tier-badge { font-size: 10px; padding: 2px 7px; border-radius: 999px; font-weight: 500; }
+    .tier-basic { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
+    .tier-nofilter { background: rgba(186,117,23,0.15); color: #EF9F27; }
+    .tier-video { background: rgba(230,51,41,0.15); color: var(--red); }
+    .comment-time { font-size: 11px; color: rgba(255,255,255,0.2); }
+    .comment-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+    .amount { font-size: 12px; font-weight: 500; color: #5DCAA5; }
+    .settle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: rgba(255,255,255,0.7); }
+    .settle-row:last-child { border-bottom: none; }
+    .status { font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+    .status-done { background: rgba(29,158,117,0.15); color: #5DCAA5; }
+    .status-pending { background: rgba(186,117,23,0.15); color: #EF9F27; }
+    .profile-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+    .profile-av { width: 56px; height: 56px; border-radius: 50%; background: rgba(230,51,41,0.15); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 500; color: var(--red); flex-shrink: 0; }
+    .profile-name { font-size: 16px; font-weight: 500; color: #f5f2ee; }
+    .profile-handle { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+    .profile-link { font-size: 12px; color: var(--red); margin-top: 6px; }
+    label { font-size: 12px; color: rgba(255,255,255,0.35); display: block; margin-bottom: 5px; }
+    input[type=text] { width: 100%; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: #f5f2ee; padding: 9px 12px; border-radius: 6px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; margin-bottom: 12px; }
+    .btn { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+    .btn:hover { background: var(--red-dark); }
+    @media (max-width: 600px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="logo">ONLY<span>ANTI</span>FANS</a>
+    <div class="topbar-user">
+      <div class="avatar">김</div>
+      김태호
+    </div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard"></i> 대시보드</div>
+      <div class="nav-item" onclick="showPage('comments',this)"><i class="ti ti-message"></i> 받은 댓글</div>
+      <div class="nav-item" onclick="showPage('profile',this)"><i class="ti ti-user"></i> 내 프로필</div>
+      <div class="nav-item" onclick="showPage('settle',this)"><i class="ti ti-wallet"></i> 정산</div>
+    </div>
+    <div class="main">
+      <div id="page-dashboard" class="page active">
+        <div class="page-title">대시보드</div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">이번 달 수익</div><div class="metric-value">₩284,000</div><div class="metric-sub">+23% 지난달 대비</div></div>
+          <div class="metric"><div class="metric-label">총 댓글</div><div class="metric-value">47</div><div class="metric-sub">+8 이번 주</div></div>
+          <div class="metric"><div class="metric-label">비디오 요청</div><div class="metric-value">3</div><div class="metric-sub">미완료</div></div>
+          <div class="metric"><div class="metric-label">정산 대기</div><div class="metric-value">₩142,000</div><div class="metric-sub">5일 후 정산</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">최근 댓글</div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">2시간 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">5시간 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount">+₩1,000</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
+        </div>
+      </div>
+      <div id="page-comments" class="page">
+        <div class="page-title">받은 댓글 (47)</div>
+        <div class="card">
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">2시간 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">5시간 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount">+₩1,000</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div></div>
+          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">3일 전</span></div><div class="comment-text">이 영상 보고 진짜 실망했다 기대를 너무 했나봐</div></div>
+        </div>
+      </div>
+      <div id="page-profile" class="page">
+        <div class="page-title">내 프로필</div>
+        <div class="card">
+          <div class="profile-top">
+            <div class="profile-av">김</div>
+            <div>
+              <div class="profile-name">김태호</div>
+              <div class="profile-handle">@taehoo_creator</div>
+              <div class="profile-link">only-antifans.com/taehoo_creator</div>
+            </div>
+          </div>
+          <label>표시 이름</label>
+          <input type="text" value="김태호">
+          <label>한 줄 소개</label>
+          <input type="text" placeholder="안티팬 환영합니다">
+          <button class="btn">저장</button>
+        </div>
+      </div>
+      <div id="page-settle" class="page">
+        <div class="page-title">정산</div>
+        <div class="metrics" style="margin-bottom:1.25rem;">
+          <div class="metric"><div class="metric-label">정산 대기</div><div class="metric-value">₩142,000</div></div>
+          <div class="metric"><div class="metric-label">누적 수익</div><div class="metric-value">₩876,000</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">정산 내역</div>
+          <div class="settle-row"><span>2026년 5월</span><span style="font-weight:500;color:#f5f2ee;">₩284,000</span><span class="status status-pending">대기 중</span></div>
+          <div class="settle-row"><span>2026년 4월</span><span style="font-weight:500;color:#f5f2ee;">₩231,000</span><span class="status status-done">정산 완료</span></div>
+          <div class="settle-row"><span>2026년 3월</span><span style="font-weight:500;color:#f5f2ee;">₩198,000</span><span class="status status-done">정산 완료</span></div>
+          <div class="settle-row"><span>2026년 2월</span><span style="font-weight:500;color:#f5f2ee;">₩163,000</span><span class="status status-done">정산 완료</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showPage(name, el) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>
