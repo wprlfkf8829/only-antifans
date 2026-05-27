@@ -66,6 +66,14 @@
     input[type=text] { width: 100%; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: #f5f2ee; padding: 9px 12px; border-radius: 6px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; margin-bottom: 12px; }
     .btn { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
     .btn:hover { background: var(--red-dark); }
+    .comment-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-action { font-size: 11px; padding: 4px 10px; border-radius: 999px; cursor: pointer; font-family: "Noto Sans KR", sans-serif; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: rgba(255,255,255,0.4); transition: all 0.15s; }
+    .btn-action.read { border-color: #5DCAA5; color: #5DCAA5; background: rgba(93,202,165,0.08); }
+    .btn-action.replied { border-color: #e63329; color: #e63329; background: rgba(230,51,41,0.08); }
+    .reply-box { margin-top: 8px; display: none; }
+    .reply-box textarea { width: 100%; font-size: 12px; height: 60px; resize: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; font-family: "Noto Sans KR", sans-serif; color: #f5f2ee; background: #1a1a1a; outline: none; display: block; margin-bottom: 6px; }
+    .reply-box .btn-send { font-size: 12px; padding: 5px 14px; background: #e63329; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    .reply-text { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; padding: 8px 10px; background: rgba(230,51,41,0.06); border-left: 2px solid #e63329; border-radius: 0 6px 6px 0; display: none; line-height: 1.6; }
     @media (max-width: 600px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -101,14 +109,74 @@
           <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount">+₩1,000</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
         </div>
       </div>
-      <div id="page-comments" class="page">
+<div id="page-comments" class="page">
         <div class="page-title">받은 댓글 (47)</div>
         <div class="card">
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">2시간 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">5시간 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount">+₩1,000</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">3일 전</span></div><div class="comment-text">이 영상 보고 진짜 실망했다 기대를 너무 했나봐</div></div>
+          <div class="comment-item" id="c1">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">2시간 전</span></div>
+            <div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div>
+            <div class="comment-actions">
+              <button class="btn-action" onclick="markRead('c1', this)">✓ 읽음</button>
+              <button class="btn-action" onclick="toggleReply('c1')">↩ 답글</button>
+            </div>
+            <div class="reply-box" id="reply-c1">
+              <textarea placeholder="답글을 입력하세요..."></textarea>
+              <button class="btn-send" onclick="sendReply('c1', this)">답글 보내기</button>
+            </div>
+            <div class="reply-text" id="reply-text-c1"></div>
+          </div>
+          <div class="comment-item" id="c2">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">5시간 전</span></div>
+            <div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div>
+            <div class="comment-actions">
+              <button class="btn-action" onclick="markRead('c2', this)">✓ 읽음</button>
+              <button class="btn-action" onclick="toggleReply('c2')">↩ 답글</button>
+            </div>
+            <div class="reply-box" id="reply-c2">
+              <textarea placeholder="답글을 입력하세요..."></textarea>
+              <button class="btn-send" onclick="sendReply('c2', this)">답글 보내기</button>
+            </div>
+            <div class="reply-text" id="reply-text-c2"></div>
+          </div>
+          <div class="comment-item" id="c3">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount">+₩1,000</span></div><span class="comment-time">어제</span></div>
+            <div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div>
+            <div class="comment-actions">
+              <button class="btn-action" onclick="markRead('c3', this)">✓ 읽음</button>
+              <button class="btn-action" onclick="toggleReply('c3')">↩ 답글</button>
+            </div>
+            <div class="reply-box" id="reply-c3">
+              <textarea placeholder="답글을 입력하세요..."></textarea>
+              <button class="btn-send" onclick="sendReply('c3', this)">답글 보내기</button>
+            </div>
+            <div class="reply-text" id="reply-text-c3"></div>
+          </div>
+          <div class="comment-item" id="c4">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount">+₩9,900</span></div><span class="comment-time">2일 전</span></div>
+            <div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div>
+            <div class="comment-actions">
+              <button class="btn-action" onclick="markRead('c4', this)">✓ 읽음</button>
+              <button class="btn-action" onclick="toggleReply('c4')">↩ 답글</button>
+            </div>
+            <div class="reply-box" id="reply-c4">
+              <textarea placeholder="답글을 입력하세요..."></textarea>
+              <button class="btn-send" onclick="sendReply('c4', this)">답글 보내기</button>
+            </div>
+            <div class="reply-text" id="reply-text-c4"></div>
+          </div>
+          <div class="comment-item" id="c5">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount">+₩49,000</span></div><span class="comment-time">3일 전</span></div>
+            <div class="comment-text">이 영상 보고 진짜 실망했다 기대를 너무 했나봐</div>
+            <div class="comment-actions">
+              <button class="btn-action" onclick="markRead('c5', this)">✓ 읽음</button>
+              <button class="btn-action" onclick="toggleReply('c5')">↩ 답글</button>
+            </div>
+            <div class="reply-box" id="reply-c5">
+              <textarea placeholder="답글을 입력하세요..."></textarea>
+              <button class="btn-send" onclick="sendReply('c5', this)">답글 보내기</button>
+            </div>
+            <div class="reply-text" id="reply-text-c5"></div>
+          </div>
         </div>
       </div>
       <div id="page-profile" class="page">
@@ -151,6 +219,34 @@
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
       el.classList.add('active');
+    }
+
+    function markRead(id, btn) {
+      btn.classList.add('read');
+      btn.textContent = '✓ 읽음 완료';
+      btn.disabled = true;
+    }
+
+    function toggleReply(id) {
+      const box = document.getElementById('reply-' + id);
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function sendReply(id, btn) {
+      const box = document.getElementById('reply-' + id);
+      const textarea = box.querySelector('textarea');
+      const text = textarea.value.trim();
+      if (!text) return;
+      const replyText = document.getElementById('reply-text-' + id);
+      replyText.innerHTML = '<b>크리에이터 답글</b>' + text;
+      replyText.style.display = 'block';
+      box.style.display = 'none';
+      // 답글 버튼 상태 변경
+      const actions = document.getElementById(id).querySelector('.comment-actions');
+      const replyBtn = actions.querySelectorAll('.btn-action')[1];
+      replyBtn.classList.add('replied');
+      replyBtn.textContent = '↩ 답글 완료';
+      replyBtn.disabled = true;
     }
   </script>
 </body>
