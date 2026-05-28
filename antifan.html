@@ -87,6 +87,11 @@
     .comment-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
     .comment-target { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 4px; }
     .video-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; background: rgba(29,158,117,0.15); color: #5DCAA5; padding: 2px 8px; border-radius: 999px; margin-top: 5px; }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-top: 5px; margin-right: 4px; }
+    .status-read { background: rgba(93,202,165,0.12); color: #5DCAA5; }
+    .status-replied { background: rgba(230,51,41,0.12); color: #e63329; }
+    .creator-reply { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; padding: 8px 10px; background: rgba(230,51,41,0.06); border-left: 2px solid #e63329; border-radius: 0 6px 6px 0; line-height: 1.6; }
+    .creator-reply b { color: #e63329; font-size: 11px; display: block; margin-bottom: 3px; }
     .amount-paid { font-size: 12px; font-weight: 500; color: var(--red); }
   </style>
 </head>
@@ -139,19 +144,54 @@
         </div>
         <div class="card">
           <div class="card-title">다른 안티팬들의 댓글 (47)</div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span></div><span class="comment-time">2시간 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">5시간 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">어제</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">3일 전</span></div><div class="comment-text">썸네일 낚시 너무 심한 거 아님?</div></div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span></div><span class="comment-time">2시간 전</span></div>
+            <div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div>
+            <span class="status-badge status-read">✓ 읽음</span><span class="status-badge status-replied">↩ 답글 있음</span>
+            <div class="creator-reply"><b>크리에이터 답글</b>돈 받았으니까 감사합니다 ㅎ</div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">5시간 전</span></div>
+            <div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div>
+            <span class="status-badge status-read">✓ 읽음</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">어제</span></div>
+            <div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span></div><span class="comment-time">2일 전</span></div>
+            <div class="comment-text">왜 저런 말투를 쓰는지 진짜 모르겠다 거슬려</div>
+            <span class="status-badge status-read">✓ 읽음</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span></div><span class="comment-time">3일 전</span></div>
+            <div class="comment-text">썸네일 낚시 너무 심한 거 아님?</div>
+          </div>
         </div>
       </div>
       <div id="page-mycomments" class="page">
         <div class="page-title">내가 쓴 댓글</div>
         <div class="card">
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount-paid">₩49,000</span></div><span class="comment-time">2일 전</span></div><div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div><div class="comment-target">→ 김태호</div><div class="video-badge"><i class="ti ti-video" style="font-size:11px"></i> 영상 답변 수신 완료</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount-paid">₩9,900</span></div><span class="comment-time">5일 전</span></div><div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div><div class="comment-target">→ 이수진</div></div>
-          <div class="comment-item"><div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount-paid">₩1,000</span></div><span class="comment-time">1주 전</span></div><div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div><div class="comment-target">→ 박민준</div></div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-video">비디오</span><span class="amount-paid">₩49,000</span></div><span class="comment-time">2일 전</span></div>
+            <div class="comment-text">진짜 이해가 안 가는 게 어떻게 저 퀄리티로 팬이 있냐고...</div>
+            <div class="comment-target">→ 김태호</div>
+            <span class="status-badge status-read">✓ 읽음</span><span class="status-badge status-replied">↩ 답글 있음</span>
+            <div class="creator-reply"><b>크리에이터 답글</b>돈 받았으니까 감사합니다 ㅎ</div>
+            <div class="video-badge"><i class="ti ti-video" style="font-size:11px"></i> 영상 답변 수신 완료</div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-nofilter">노필터</span><span class="amount-paid">₩9,900</span></div><span class="comment-time">5일 전</span></div>
+            <div class="comment-text">콘텐츠가 매번 똑같아서 이제 진짜 질린다</div>
+            <div class="comment-target">→ 이수진</div>
+            <span class="status-badge status-read">✓ 읽음</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-header"><div class="comment-meta"><span class="tier-badge tier-basic">일반</span><span class="amount-paid">₩1,000</span></div><span class="comment-time">1주 전</span></div>
+            <div class="comment-text">편집 좀 신경 써줬으면 좋겠어요</div>
+            <div class="comment-target">→ 박민준</div>
+          </div>
         </div>
       </div>
     </div>
